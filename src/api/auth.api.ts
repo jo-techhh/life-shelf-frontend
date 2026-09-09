@@ -30,13 +30,16 @@ export const authApi = {
   },
 
   async login(data: LoginDto): Promise<AuthResponse> {
-    const res = await apiClient.post<ApiResponse<AuthResponse>>('/auth/login', data);
+    const res = await apiClient.post<ApiResponse<AuthResponse>>('/auth/login', { ...data, identifier: data.emailOrUsername });
     return res.data.data;
   },
 
   async getMe(): Promise<{ user: User; cloudStorageConfigured: boolean }> {
-    const res = await apiClient.get<ApiResponse<{ user: User; cloudStorageConfigured: boolean }>>('/auth/me');
-    return res.data.data;
+    const res = await apiClient.get<ApiResponse<any>>('/auth/me');
+    const raw = res.data.data;
+    const user: User = (raw && raw.user) ? raw.user : raw;
+    const cloudStorageConfigured = Boolean(raw?.cloudStorageConfigured || raw?.cloudStorageConfig?.isConfigured);
+    return { user, cloudStorageConfigured };
   },
 
   async updateProfile(data: UpdateProfileDto): Promise<User> {
@@ -58,3 +61,7 @@ export const authApi = {
     await apiClient.post('/auth/logout');
   },
 };
+
+
+
+

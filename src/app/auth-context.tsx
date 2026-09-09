@@ -19,8 +19,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
-    const cached = localStorage.getItem('lifeshelf_user');
-    return cached ? JSON.parse(cached) : null;
+    try {
+      const cached = localStorage.getItem('lifeshelf_user');
+      if (!cached || cached === 'undefined' || cached === 'null') return null;
+      return JSON.parse(cached);
+    } catch {
+      localStorage.removeItem('lifeshelf_user');
+      return null;
+    }
   });
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem('lifeshelf_token');
@@ -37,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await authApi.getMe();
       setUser(data.user);
       setCloudStorageConfigured(data.cloudStorageConfigured);
-      localStorage.setItem('lifeshelf_user', JSON.stringify(data.user));
+      if (data.user) localStorage.setItem('lifeshelf_user', JSON.stringify(data.user));
     } catch {
       // If token is invalid or expired
       setUser(null);
@@ -56,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (data: LoginDto) => {
     const res = await authApi.login(data);
     localStorage.setItem('lifeshelf_token', res.token);
-    localStorage.setItem('lifeshelf_user', JSON.stringify(res.user));
+    if (res.user) localStorage.setItem('lifeshelf_user', JSON.stringify(res.user));
     setToken(res.token);
     setUser(res.user);
   };
@@ -64,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = async (data: RegisterDto) => {
     const res = await authApi.register(data);
     localStorage.setItem('lifeshelf_token', res.token);
-    localStorage.setItem('lifeshelf_user', JSON.stringify(res.user));
+    if (res.user) localStorage.setItem('lifeshelf_user', JSON.stringify(res.user));
     setToken(res.token);
     setUser(res.user);
   };
@@ -85,7 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const updateProfile = async (data: UpdateProfileDto) => {
     const updatedUser = await authApi.updateProfile(data);
     setUser(updatedUser);
-    localStorage.setItem('lifeshelf_user', JSON.stringify(updatedUser));
+    if (updatedUser) localStorage.setItem('lifeshelf_user', JSON.stringify(updatedUser));
   };
 
   return (
@@ -115,3 +121,6 @@ export function useAuth(): AuthContextType {
   }
   return context;
 }
+
+
+
