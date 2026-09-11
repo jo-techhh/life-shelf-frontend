@@ -9,6 +9,8 @@ import { Tabs } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
+import { PageHeader } from '@/components/common/page-header';
+import { FilterBar } from '@/components/common/filter-bar';
 import { CardSkeletonGrid } from '@/components/common/loading-skeleton';
 import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
@@ -107,52 +109,46 @@ export function MovieListPage() {
   return (
     <div className="max-w-7xl mx-auto flex flex-col gap-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground flex items-center gap-2.5">
-            <Film className="w-7 h-7 text-primary" />
-            Movies
-          </h1>
-          <p className="text-xs text-muted-foreground mt-1">
-            Collect, organize, rate, and track films you want to watch or have seen.
-          </p>
-        </div>
-
-        <Button
-          onClick={() => {
-            setEditingMovie(null);
-            setIsFormOpen(true);
-          }}
-          size="sm"
-          className="gap-2 self-start sm:self-auto"
-        >
-          <Plus className="w-4 h-4" />
-          Add Movie
-        </Button>
-      </div>
+      <PageHeader
+        icon={<Film className="w-5 h-5" />}
+        title="Movies"
+        description="Collect, organize, rate, and track films you want to watch or have seen."
+        action={
+          <Button
+            onClick={() => {
+              setEditingMovie(null);
+              setIsFormOpen(true);
+            }}
+            size="sm"
+            className="gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Movie
+          </Button>
+        }
+      />
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col gap-4 bg-card/60 border border-border/60 p-4 rounded-2xl shadow-sm">
-        {/* Status Tabs */}
-        <Tabs
-          activeTab={statusFilter}
-          onChange={(tab) => {
-            setStatusFilter(tab);
-            setPage(1);
-          }}
-          tabs={[
-            { id: 'ALL', label: 'All' },
-            { id: 'PLANNED', label: 'Planned' },
-            { id: 'WATCHING', label: 'Watching' },
-            { id: 'WATCHED', label: 'Watched' },
-            { id: 'DROPPED', label: 'Dropped' },
-          ]}
-        />
-
-        {/* Search & Sort row */}
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          <div className="relative flex-1 w-full">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+      <FilterBar
+        tabs={
+          <Tabs
+            activeTab={statusFilter}
+            onChange={(tab) => {
+              setStatusFilter(tab);
+              setPage(1);
+            }}
+            tabs={[
+              { id: 'ALL', label: 'All' },
+              { id: 'PLANNED', label: 'Planned' },
+              { id: 'WATCHING', label: 'Watching' },
+              { id: 'WATCHED', label: 'Watched' },
+              { id: 'DROPPED', label: 'Dropped' },
+            ]}
+          />
+        }
+        search={
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => {
@@ -160,18 +156,19 @@ export function MovieListPage() {
                 setPage(1);
               }}
               placeholder="Search movies by title, director, cast..."
-              className="pl-9 h-10 text-xs"
+              className="pl-9 h-9.5 text-xs bg-card"
             />
           </div>
-
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+        }
+        filters={
+          <>
             <Select
               value={priorityFilter}
               onChange={(e) => {
                 setPriorityFilter(e.target.value);
                 setPage(1);
               }}
-              className="h-10 text-xs w-32"
+              className="h-9.5 text-xs w-32 bg-card"
               options={[
                 { label: 'All Priorities', value: 'ALL' },
                 { label: 'High Priority', value: 'HIGH' },
@@ -188,7 +185,7 @@ export function MovieListPage() {
                 setSortOrder(order);
                 setPage(1);
               }}
-              className="h-10 text-xs w-36"
+              className="h-9.5 text-xs w-36 bg-card"
               options={[
                 { label: 'Newest Added', value: 'createdAt-desc' },
                 { label: 'Title (A-Z)', value: 'title-asc' },
@@ -196,9 +193,9 @@ export function MovieListPage() {
                 { label: 'Release Year', value: 'releaseYear-desc' },
               ]}
             />
-          </div>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       {/* Main Grid View */}
       {isLoading ? (

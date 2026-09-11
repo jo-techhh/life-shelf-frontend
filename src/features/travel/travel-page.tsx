@@ -8,13 +8,15 @@ import { TripFormModal, TripFormValues } from './trip-form-modal';
 import { Tabs } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PageHeader } from '@/components/common/page-header';
+import { FilterBar } from '@/components/common/filter-bar';
 import { StatusBadge, PriorityBadge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/common/loading-skeleton';
 import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
 import { Dialog } from '@/components/ui/dialog';
 import { Select } from '@/components/ui/select';
-import { Skeleton } from '@/components/common/loading-skeleton';
 import { useToast } from '@/app/toast-context';
 import {
   Compass,
@@ -199,19 +201,12 @@ export function TravelPage() {
   return (
     <div className="max-w-7xl mx-auto flex flex-col gap-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground flex items-center gap-2.5">
-            <Compass className="w-7 h-7 text-primary" />
-            Travel & Trips
-          </h1>
-          <p className="text-xs text-muted-foreground mt-1">
-            Bucket list destinations, trip planning itineraries, budgets, and memorable visits.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {isTripsTab ? (
+      <PageHeader
+        icon={<Compass className="w-5 h-5" />}
+        title="Travel & Trips"
+        description="Bucket list destinations, trip planning itineraries, budgets, and memorable visits."
+        action={
+          isTripsTab ? (
             <Button
               onClick={() => {
                 setEditingTrip(null);
@@ -235,33 +230,36 @@ export function TravelPage() {
               <Plus className="w-4 h-4" />
               Add Place
             </Button>
-          )}
-        </div>
-      </div>
+          )
+        }
+      />
 
       {/* Tabs & Search */}
-      <div className="flex flex-col gap-4 bg-card/60 border border-border/60 p-4 rounded-2xl shadow-sm">
-        <Tabs
-          activeTab={activeTab}
-          onChange={setActiveTab}
-          tabs={[
-            { id: 'WANT_TO_VISIT', label: 'Want to Visit' },
-            { id: 'PLANNING', label: 'Planning' },
-            { id: 'VISITED', label: 'Visited' },
-            { id: 'TRIPS', label: 'Trips Itinerary' },
-          ]}
-        />
-
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={isTripsTab ? 'Search trips...' : 'Search places by name, country, city...'}
-            className="pl-9 h-10 text-xs"
+      <FilterBar
+        tabs={
+          <Tabs
+            activeTab={activeTab}
+            onChange={setActiveTab}
+            tabs={[
+              { id: 'WANT_TO_VISIT', label: 'Want to Visit' },
+              { id: 'PLANNING', label: 'Planning' },
+              { id: 'VISITED', label: 'Visited' },
+              { id: 'TRIPS', label: 'Trips Itinerary' },
+            ]}
           />
-        </div>
-      </div>
+        }
+        search={
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={isTripsTab ? 'Search trips...' : 'Search places by name, country, city...'}
+              className="pl-9 h-9.5 text-xs bg-card"
+            />
+          </div>
+        }
+      />
 
       {/* Content for Places */}
       {!isTripsTab && (
@@ -616,14 +614,14 @@ export function TravelPage() {
             value={selectedPlaceIdToAdd}
             onChange={(e) => setSelectedPlaceIdToAdd(e.target.value)}
             required
-          >
-            <option value="">-- Choose a Place from your shelf --</option>
-            {allPlacesData?.data?.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name} {p.country ? `(${p.country})` : ''}
-              </option>
-            ))}
-          </Select>
+            options={[
+              { label: '-- Choose a Place from your shelf --', value: '' },
+              ...(allPlacesData?.data?.map((p) => ({
+                value: p.id,
+                label: `${p.name}${p.country ? ` (${p.country})` : ''}`,
+              })) || []),
+            ]}
+          />
 
           <div className="flex items-center justify-end gap-2 pt-2 border-t border-border/60">
             <Button

@@ -28,26 +28,26 @@ export function MovieCard({ movie, onStatusChange, onEdit, onDelete }: MovieCard
   const poster = movie.mediaAsset?.secureUrl || movie.mediaAsset?.url;
 
   return (
-    <div className="group relative flex flex-col rounded-2xl border border-border/70 bg-card overflow-hidden shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-200">
+    <div className="group relative flex flex-col rounded-2xl border border-border/80 bg-card overflow-hidden shadow-2xs hover:shadow-md hover:border-primary/40 transition-all duration-200">
       {/* Poster image container */}
-      <Link to={`/watch/movies/${movie.id}`} className="relative aspect-[2/3] w-full bg-muted/40 overflow-hidden block">
+      <Link to={`/watch/movies/${movie.id}`} className="relative aspect-[2/3] w-full bg-secondary/50 overflow-hidden block">
         {poster ? (
           <img
             src={poster}
             alt={movie.title}
             loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/50 p-4 text-center">
-            <Film className="w-10 h-10 mb-2" />
+          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/40 p-4 text-center">
+            <Film className="w-9 h-9 mb-2 opacity-60" />
             <span className="text-xs font-medium line-clamp-2">{movie.title}</span>
           </div>
         )}
 
         {/* Rating overlay badge */}
         {movie.rating ? (
-          <div className="absolute top-2.5 left-2.5 flex items-center gap-1 px-2 py-0.5 rounded-lg bg-background/90 backdrop-blur-md text-foreground text-xs font-bold shadow-sm">
+          <div className="absolute top-2.5 left-2.5 flex items-center gap-1 px-2 py-0.5 rounded-lg bg-background/90 backdrop-blur-md text-foreground text-xs font-bold shadow-2xs border border-border/50">
             <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
             <span>{movie.rating.toFixed(1)}</span>
           </div>
@@ -68,7 +68,7 @@ export function MovieCard({ movie, onStatusChange, onEdit, onDelete }: MovieCard
           >
             {movie.title}
           </Link>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5">
             {movie.releaseYear && <span>{movie.releaseYear}</span>}
             {movie.releaseYear && movie.genre && <span>·</span>}
             {movie.genre && <span className="truncate">{movie.genre}</span>}
@@ -83,7 +83,7 @@ export function MovieCard({ movie, onStatusChange, onEdit, onDelete }: MovieCard
             <button
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+              className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
               aria-label="Options"
             >
               <MoreVertical className="w-4 h-4" />
@@ -102,7 +102,7 @@ export function MovieCard({ movie, onStatusChange, onEdit, onDelete }: MovieCard
                       onStatusChange(movie.id, s);
                       setMenuOpen(false);
                     }}
-                    className={`w-full text-left px-2 py-1 rounded-md capitalize transition-colors ${
+                    className={`w-full text-left px-2 py-1 rounded-md capitalize transition-colors cursor-pointer ${
                       movie.status === s ? 'font-semibold text-primary bg-primary/10' : 'hover:bg-muted text-foreground'
                     }`}
                   >

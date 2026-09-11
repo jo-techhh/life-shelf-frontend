@@ -7,7 +7,7 @@ import { useAuth } from '@/app/auth-context';
 import { useToast } from '@/app/toast-context';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Library, UserPlus } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 
 const registerSchema = z
   .object({
@@ -73,13 +73,16 @@ export function RegisterPage() {
       <div className="w-full max-w-md rounded-3xl border border-border bg-card/90 backdrop-blur-xl p-8 shadow-2xl flex flex-col gap-6 animate-in zoom-in-95">
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center gap-2">
-          <div className="w-12 h-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shadow-md shadow-primary/20">
-            <Library className="w-6 h-6" />
+          <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-md border border-border/60 bg-card flex items-center justify-center">
+            <img src="/logo.png" alt="LifeShelf" className="w-full h-full object-cover" />
           </div>
-          <h1 className="text-2xl font-bold font-display tracking-tight text-foreground mt-2">
+          <h1 className="text-2xl font-bold font-display tracking-tight text-foreground mt-1">
             Create your LifeShelf
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-[11px] font-medium text-muted-foreground tracking-wide -mt-1">
+            Watch · Read · Learn · Explore
+          </p>
+          <p className="text-xs text-muted-foreground mt-0.5">
             A single shelf for everything you watch, read, learn, and explore.
           </p>
         </div>

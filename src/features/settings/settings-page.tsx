@@ -8,6 +8,7 @@ import { Tabs } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
+import { PageHeader } from '@/components/common/page-header';
 import { useToast } from '@/app/toast-context';
 import {
   Settings,
@@ -126,15 +127,11 @@ export function SettingsPage() {
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-6 pb-16">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground flex items-center gap-2.5">
-          <Settings className="w-7 h-7 text-primary" />
-          Settings
-        </h1>
-        <p className="text-xs text-muted-foreground mt-1">
-          Manage your personal profile, appearance, custom cloud storage, and security.
-        </p>
-      </div>
+      <PageHeader
+        icon={<Settings className="w-5 h-5" />}
+        title="Settings"
+        description="Manage your personal profile, appearance, custom cloud storage, and security."
+      />
 
       {/* Tabs */}
       <Tabs

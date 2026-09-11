@@ -5,6 +5,8 @@ import { MediaAsset } from '@/types';
 import { Tabs } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PageHeader } from '@/components/common/page-header';
+import { FilterBar } from '@/components/common/filter-bar';
 import { Dialog } from '@/components/ui/dialog';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
 import { EmptyState } from '@/components/common/empty-state';
@@ -118,52 +120,50 @@ export function MediaPage() {
   return (
     <div className="max-w-7xl mx-auto flex flex-col gap-6 pb-12">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground flex items-center gap-2.5">
-            <FolderArchive className="w-7 h-7 text-primary" />
-            Media Library
-          </h1>
-          <p className="text-xs text-muted-foreground mt-1">
-            Manage your personal uploaded images and system default covers.
-          </p>
-        </div>
-
-        <Button onClick={() => setIsUploadOpen(true)} size="sm" className="gap-2">
-          <UploadCloud className="w-4 h-4" />
-          Upload Image
-        </Button>
-      </div>
+      <PageHeader
+        icon={<FolderArchive className="w-5 h-5" />}
+        title="Media Library"
+        description="Manage your personal uploaded images and system default covers."
+        action={
+          <Button onClick={() => setIsUploadOpen(true)} size="sm" className="gap-2">
+            <UploadCloud className="w-4 h-4" />
+            Upload Image
+          </Button>
+        }
+      />
 
       {/* Tabs & Search */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-card/60 border border-border/60 p-4 rounded-2xl shadow-sm">
-        <Tabs
-          activeTab={activeTab}
-          onChange={(tab) => {
-            setActiveTab(tab as 'my' | 'defaults');
-            setPage(1);
-          }}
-          tabs={[
-            { id: 'my', label: 'My Images' },
-            { id: 'defaults', label: 'Default System Covers' },
-          ]}
-        />
-
-        {activeTab === 'my' && (
-          <div className="relative w-full sm:w-72">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
-              }}
-              placeholder="Search images..."
-              className="pl-9 h-10 text-xs"
-            />
-          </div>
-        )}
-      </div>
+      <FilterBar
+        tabs={
+          <Tabs
+            activeTab={activeTab}
+            onChange={(tab) => {
+              setActiveTab(tab as 'my' | 'defaults');
+              setPage(1);
+            }}
+            tabs={[
+              { id: 'my', label: 'My Images' },
+              { id: 'defaults', label: 'Default System Covers' },
+            ]}
+          />
+        }
+        search={
+          activeTab === 'my' ? (
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
+              <Input
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1);
+                }}
+                placeholder="Search images by name..."
+                className="pl-9 h-9.5 text-xs bg-card"
+              />
+            </div>
+          ) : undefined
+        }
+      />
 
       {/* Tab Content: My Images */}
       {activeTab === 'my' && (

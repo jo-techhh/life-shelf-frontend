@@ -5,6 +5,7 @@ import { moviesApi } from '@/api/movies.api';
 import { MovieStatus } from '@/types';
 import { StatusBadge, PriorityBadge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Select } from '@/components/ui/select';
 import { MovieFormModal, MovieFormValues } from './movie-form-modal';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
 import { ErrorState } from '@/components/common/error-state';
@@ -204,19 +205,21 @@ export function MovieDetailsPage() {
             </Button>
 
             {/* Quick Status toggle */}
-            <div className="ml-auto">
-              <select
+            <div className="ml-auto w-44">
+              <Select
                 value={movie.status}
+                align="right"
                 onChange={(e) =>
                   updateMutation.mutate({ status: e.target.value as MovieStatus })
                 }
-                className="h-8 text-xs font-medium rounded-xl border border-input bg-card px-3 text-foreground cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary"
-              >
-                <option value="PLANNED">Mark as Planned</option>
-                <option value="WATCHING">Mark as Watching</option>
-                <option value="WATCHED">Mark as Watched</option>
-                <option value="DROPPED">Mark as Dropped</option>
-              </select>
+                options={[
+                  { label: 'Mark as Planned', value: 'PLANNED' },
+                  { label: 'Mark as Watching', value: 'WATCHING' },
+                  { label: 'Mark as Watched', value: 'WATCHED' },
+                  { label: 'Mark as Dropped', value: 'DROPPED' },
+                ]}
+                className="h-9 text-xs"
+              />
             </div>
           </div>
         </div>

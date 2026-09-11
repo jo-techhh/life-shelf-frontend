@@ -6,6 +6,7 @@ import { Episode, SeriesStatus } from '@/types';
 import { StatusBadge, PriorityBadge } from '@/components/ui/badge';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { Button } from '@/components/ui/button';
+import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Dialog } from '@/components/ui/dialog';
 import { SeriesFormModal, SeriesFormValues } from './series-form-modal';
@@ -281,19 +282,22 @@ export function SeriesDetailsPage() {
               Delete
             </Button>
 
-            <div className="ml-auto">
-              <select
+            {/* Quick Status toggle */}
+            <div className="ml-auto w-44">
+              <Select
                 value={series.status}
+                align="right"
                 onChange={(e) =>
                   updateMutation.mutate({ status: e.target.value as SeriesStatus })
                 }
-                className="h-8 text-xs font-medium rounded-xl border border-input bg-card px-3 text-foreground cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary"
-              >
-                <option value="PLANNED">Mark as Planned</option>
-                <option value="WATCHING">Mark as Watching</option>
-                <option value="WATCHED">Mark as Watched</option>
-                <option value="DROPPED">Mark as Dropped</option>
-              </select>
+                options={[
+                  { label: 'Mark as Planned', value: 'PLANNED' },
+                  { label: 'Mark as Watching', value: 'WATCHING' },
+                  { label: 'Mark as Watched', value: 'WATCHED' },
+                  { label: 'Mark as Dropped', value: 'DROPPED' },
+                ]}
+                className="h-9 text-xs"
+              />
             </div>
           </div>
         </div>

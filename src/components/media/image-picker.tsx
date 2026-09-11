@@ -299,47 +299,94 @@ export function ImagePicker({ value, currentAsset, onChange, label = 'Cover Imag
 
           {/* TAB 3: DEFAULT COVERS */}
           {activeTab === 'defaults' && (
-            <div className="py-2">
-              {isLoadingDefaults ? (
-                <div className="flex items-center justify-center py-12 text-muted-foreground gap-2">
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Loading default covers...</span>
-                </div>
-              ) : defaultAssets?.length ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-96 overflow-y-auto pr-1">
-                  {defaultAssets.map((asset) => (
-                    <button
-                      key={asset.id}
-                      type="button"
-                      onClick={() => handleSelectExisting(asset)}
-                      className={cn(
-                        'group relative aspect-[2/3] rounded-xl overflow-hidden border transition-all cursor-pointer text-left bg-muted/40',
-                        value === asset.id
-                          ? 'border-primary ring-2 ring-primary/40'
-                          : 'border-border/60 hover:border-primary/50'
-                      )}
-                    >
-                      <img
-                        src={asset.secureUrl || asset.url}
-                        alt={asset.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-background/90 backdrop-blur-sm p-2 border-t border-border/40">
-                        <span className="text-xs font-semibold text-foreground truncate block">
-                          {asset.name}
+            <div className="py-2 flex flex-col gap-4">
+              {/* Visual Preset Category Cards */}
+              <div>
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                  Category Presets
+                </span>
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                  {[
+                    { type: 'MOVIE', emoji: '🎬', label: 'Movie' },
+                    { type: 'SERIES', emoji: '📺', label: 'Series' },
+                    { type: 'READING', emoji: '📚', label: 'Book' },
+                    { type: 'STUDY', emoji: '🎓', label: 'Study' },
+                    { type: 'TRAVEL', emoji: '✈️', label: 'Travel' },
+                    { type: 'OTHER', emoji: '📄', label: 'Generic' },
+                  ].map((cat) => {
+                    // Check if there is a matching default asset from backend
+                    const matchedAsset = defaultAssets?.find(
+                      (a) => a.type?.toUpperCase() === cat.type
+                    );
+                    return (
+                      <button
+                        key={cat.type}
+                        type="button"
+                        onClick={() => {
+                          if (matchedAsset) {
+                            handleSelectExisting(matchedAsset);
+                          } else {
+                            toast.success(`Selected ${cat.label} preset`);
+                          }
+                        }}
+                        className="flex flex-col items-center justify-center p-3 rounded-xl border border-border/70 bg-card hover:bg-secondary/70 hover:border-primary/40 transition-all cursor-pointer group"
+                      >
+                        <span className="text-2xl mb-1 group-hover:scale-110 transition-transform">
+                          {cat.emoji}
                         </span>
-                        <span className="text-[10px] text-muted-foreground capitalize">
-                          {asset.type.toLowerCase()}
-                        </span>
-                      </div>
-                    </button>
-                  ))}
+                        <span className="text-xs font-medium text-foreground">{cat.label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
-              ) : (
-                <div className="text-center py-10 text-sm text-muted-foreground">
-                  No default covers found.
-                </div>
-              )}
+              </div>
+
+              {/* Server-Provided Default Images */}
+              <div>
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                  Default Cover Artwork
+                </span>
+                {isLoadingDefaults ? (
+                  <div className="flex items-center justify-center py-12 text-muted-foreground gap-2">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Loading default covers...</span>
+                  </div>
+                ) : defaultAssets?.length ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-72 overflow-y-auto pr-1">
+                    {defaultAssets.map((asset) => (
+                      <button
+                        key={asset.id}
+                        type="button"
+                        onClick={() => handleSelectExisting(asset)}
+                        className={cn(
+                          'group relative aspect-[2/3] rounded-xl overflow-hidden border transition-all cursor-pointer text-left bg-muted/40',
+                          value === asset.id
+                            ? 'border-primary ring-2 ring-primary/40'
+                            : 'border-border/60 hover:border-primary/50'
+                        )}
+                      >
+                        <img
+                          src={asset.secureUrl || asset.url}
+                          alt={asset.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 bg-background/90 backdrop-blur-sm p-2 border-t border-border/40">
+                          <span className="text-xs font-semibold text-foreground truncate block">
+                            {asset.name}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground capitalize">
+                            {asset.type?.toLowerCase() || 'cover'}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-6 text-xs text-muted-foreground border border-dashed border-border/60 rounded-xl">
+                    Select one of the category presets above or upload a custom image.
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

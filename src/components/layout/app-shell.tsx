@@ -66,7 +66,7 @@ export function AppShell() {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <MobileNavigation />
+      <MobileNavigation onOpenQuickAdd={() => setQuickAddOpen(true)} />
 
       {/* Global Command Palette */}
       <CommandPalette

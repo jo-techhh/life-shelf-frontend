@@ -36,26 +36,26 @@ export function SeriesCard({ series, onStatusChange, onEdit, onDelete }: SeriesC
   const nextEp = series.progress?.nextUnwatchedEpisode;
 
   return (
-    <div className="group relative flex flex-col rounded-2xl border border-border/70 bg-card overflow-hidden shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-200">
+    <div className="group relative flex flex-col rounded-2xl border border-border/80 bg-card overflow-hidden shadow-2xs hover:shadow-md hover:border-primary/40 transition-all duration-200">
       {/* Poster */}
-      <Link to={`/watch/series/${series.id}`} className="relative aspect-[16/9] sm:aspect-[2/3] w-full bg-muted/40 overflow-hidden block">
+      <Link to={`/watch/series/${series.id}`} className="relative aspect-[2/3] w-full bg-secondary/50 overflow-hidden block">
         {poster ? (
           <img
             src={poster}
             alt={series.title}
             loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/50 p-4 text-center">
-            <Tv className="w-10 h-10 mb-2" />
+          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/40 p-4 text-center">
+            <Tv className="w-9 h-9 mb-2 opacity-60" />
             <span className="text-xs font-medium line-clamp-2">{series.title}</span>
           </div>
         )}
 
         {/* Rating overlay badge */}
         {series.rating ? (
-          <div className="absolute top-2.5 left-2.5 flex items-center gap-1 px-2 py-0.5 rounded-lg bg-background/90 backdrop-blur-md text-foreground text-xs font-bold shadow-sm">
+          <div className="absolute top-2.5 left-2.5 flex items-center gap-1 px-2 py-0.5 rounded-lg bg-background/90 backdrop-blur-md text-foreground text-xs font-bold shadow-2xs border border-border/50">
             <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
             <span>{series.rating.toFixed(1)}</span>
           </div>

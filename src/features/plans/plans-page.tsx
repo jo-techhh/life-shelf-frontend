@@ -8,6 +8,8 @@ import { Tabs } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
+import { PageHeader } from '@/components/common/page-header';
+import { FilterBar } from '@/components/common/filter-bar';
 import { PriorityBadge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
@@ -149,60 +151,57 @@ export function PlansPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto flex flex-col gap-6 pb-12">
+    <div className="max-w-4xl mx-auto flex flex-col gap-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground flex items-center gap-2.5">
-            <CalendarCheck className="w-7 h-7 text-primary" />
-            Plans
-          </h1>
-          <p className="text-xs text-muted-foreground mt-1">
-            Personal to-do list connecting items on your shelf with your day-to-day schedule.
-          </p>
-        </div>
-
-        <Button
-          onClick={() => {
-            setEditingPlan(null);
-            setIsFormOpen(true);
-          }}
-          size="sm"
-          className="gap-2 self-start sm:self-auto"
-        >
-          <Plus className="w-4 h-4" />
-          Add Plan
-        </Button>
-      </div>
+      <PageHeader
+        icon={<CalendarCheck className="w-5 h-5" />}
+        title="Plans & To-Do"
+        description="Personal to-do list connecting items on your shelf with your day-to-day schedule."
+        action={
+          <Button
+            onClick={() => {
+              setEditingPlan(null);
+              setIsFormOpen(true);
+            }}
+            size="sm"
+            className="gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Plan
+          </Button>
+        }
+      />
 
       {/* Tabs & Filter Bar */}
-      <div className="flex flex-col gap-4 bg-card/60 border border-border/60 p-4 rounded-2xl shadow-sm">
-        <Tabs
-          activeTab={viewTab}
-          onChange={setViewTab}
-          tabs={[
-            { id: 'TODAY', label: 'Today' },
-            { id: 'UPCOMING', label: 'Upcoming' },
-            { id: 'ALL', label: 'All Plans' },
-            { id: 'COMPLETED', label: 'Completed' },
-          ]}
-        />
-
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          <div className="relative flex-1 w-full">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+      <FilterBar
+        tabs={
+          <Tabs
+            activeTab={viewTab}
+            onChange={setViewTab}
+            tabs={[
+              { id: 'TODAY', label: 'Today' },
+              { id: 'UPCOMING', label: 'Upcoming' },
+              { id: 'ALL', label: 'All Plans' },
+              { id: 'COMPLETED', label: 'Completed' },
+            ]}
+          />
+        }
+        search={
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search plans..."
-              className="pl-9 h-10 text-xs"
+              className="pl-9 h-9.5 text-xs bg-card"
             />
           </div>
-
+        }
+        filters={
           <Select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="h-10 text-xs w-44"
+            className="h-9.5 text-xs w-44 bg-card"
             options={[
               { label: 'All Shelf Types', value: 'ALL' },
               { label: 'Movie', value: 'MOVIE' },
@@ -213,8 +212,8 @@ export function PlansPage() {
               { label: 'Other', value: 'OTHER' },
             ]}
           />
-        </div>
-      </div>
+        }
+      />
 
       {/* Plans List */}
       {isLoading ? (

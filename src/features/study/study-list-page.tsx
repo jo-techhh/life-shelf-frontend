@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { StatusBadge, PriorityBadge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/common/page-header';
+import { FilterBar } from '@/components/common/filter-bar';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
@@ -146,50 +148,46 @@ export function StudyListPage() {
   return (
     <div className="max-w-7xl mx-auto flex flex-col gap-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground flex items-center gap-2.5">
-            <GraduationCap className="w-7 h-7 text-primary" />
-            Studylist
-          </h1>
-          <p className="text-xs text-muted-foreground mt-1">
-            Technologies, courses, skills, and certifications with attached learning resources.
-          </p>
-        </div>
-
-        <Button
-          onClick={() => {
-            setEditingItem(null);
-            setIsFormOpen(true);
-          }}
-          size="sm"
-          className="gap-2 self-start sm:self-auto"
-        >
-          <Plus className="w-4 h-4" />
-          Add Study Topic
-        </Button>
-      </div>
+      <PageHeader
+        icon={<GraduationCap className="w-5 h-5" />}
+        title="Studylist"
+        description="Technologies, courses, skills, and certifications with attached learning resources."
+        action={
+          <Button
+            onClick={() => {
+              setEditingItem(null);
+              setIsFormOpen(true);
+            }}
+            size="sm"
+            className="gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Study Topic
+          </Button>
+        }
+      />
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col gap-4 bg-card/60 border border-border/60 p-4 rounded-2xl shadow-sm">
-        <Tabs
-          activeTab={statusFilter}
-          onChange={(tab) => {
-            setStatusFilter(tab);
-            setPage(1);
-          }}
-          tabs={[
-            { id: 'ALL', label: 'All' },
-            { id: 'PLANNED', label: 'Planned' },
-            { id: 'LEARNING', label: 'Learning' },
-            { id: 'COMPLETED', label: 'Completed' },
-            { id: 'DROPPED', label: 'Dropped' },
-          ]}
-        />
-
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          <div className="relative flex-1 w-full">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+      <FilterBar
+        tabs={
+          <Tabs
+            activeTab={statusFilter}
+            onChange={(tab) => {
+              setStatusFilter(tab);
+              setPage(1);
+            }}
+            tabs={[
+              { id: 'ALL', label: 'All' },
+              { id: 'PLANNED', label: 'Planned' },
+              { id: 'LEARNING', label: 'Learning' },
+              { id: 'COMPLETED', label: 'Completed' },
+              { id: 'DROPPED', label: 'Dropped' },
+            ]}
+          />
+        }
+        search={
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => {
@@ -197,17 +195,18 @@ export function StudyListPage() {
                 setPage(1);
               }}
               placeholder="Search by topic, skill, course..."
-              className="pl-9 h-10 text-xs"
+              className="pl-9 h-9.5 text-xs bg-card"
             />
           </div>
-
+        }
+        filters={
           <Select
             value={typeFilter}
             onChange={(e) => {
               setTypeFilter(e.target.value);
               setPage(1);
             }}
-            className="h-10 text-xs w-40"
+            className="h-9.5 text-xs w-40 bg-card"
             options={[
               { label: 'All Types', value: 'ALL' },
               { label: 'Technology', value: 'TECHNOLOGY' },
@@ -220,8 +219,8 @@ export function StudyListPage() {
               { label: 'Other', value: 'OTHER' },
             ]}
           />
-        </div>
-      </div>
+        }
+      />
 
       {/* Grid */}
       {isLoading ? (

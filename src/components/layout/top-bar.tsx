@@ -14,7 +14,6 @@ import {
   LogOut,
   Settings,
   User as UserIcon,
-  Library,
 } from 'lucide-react';
 
 export interface TopBarProps {
@@ -55,14 +54,14 @@ export function TopBar({ onOpenSearch, onOpenQuickAdd }: TopBarProps) {
       {/* Brand & Mobile Title */}
       <div className="flex items-center gap-3">
         <Link to="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-            <Library className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-xl overflow-hidden shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center border border-border/60 bg-card shrink-0">
+            <img src="/logo.png" alt="LifeShelf" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col">
             <span className="font-display font-bold text-base tracking-tight text-foreground leading-none">
               LifeShelf
             </span>
-            <span className="text-[10px] text-muted-foreground font-medium tracking-wide hidden sm:inline-block">
+            <span className="text-[10px] text-muted-foreground font-medium tracking-wide hidden sm:inline-block mt-0.5">
               Watch · Read · Learn · Explore
             </span>
           </div>

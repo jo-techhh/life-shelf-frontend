@@ -27,10 +27,10 @@ function NavItem({ to, icon: Icon, label, end }: NavItemProps) {
       end={end}
       className={({ isActive }) =>
         cn(
-          'flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-150 group',
+          'flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-150 group select-none',
           isActive
-            ? 'bg-primary text-primary-foreground shadow-sm font-semibold'
-            : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
+            ? 'bg-primary text-primary-foreground shadow-xs font-semibold'
+            : 'text-muted-foreground hover:text-foreground hover:bg-secondary/70'
         )
       }
     >
@@ -42,10 +42,10 @@ function NavItem({ to, icon: Icon, label, end }: NavItemProps) {
 
 export function Sidebar() {
   return (
-    <aside className="hidden md:flex flex-col w-60 border-r border-border/60 bg-card/40 p-4 shrink-0 select-none min-h-[calc(100vh-4rem)]">
+    <aside className="hidden md:flex flex-col w-60 border-r border-border/70 bg-card/50 dark:bg-card/30 p-4 shrink-0 select-none min-h-[calc(100vh-4rem)]">
       {/* Navigation Group 1: General */}
       <div className="flex flex-col gap-1">
-        <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+        <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
           Personal Shelf
         </div>
         <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" end />
@@ -53,7 +53,7 @@ export function Sidebar() {
 
       {/* Navigation Group 2: Media & Entertainment */}
       <div className="flex flex-col gap-1 mt-5">
-        <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+        <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
           Watch
         </div>
         <NavItem to="/watch/movies" icon={Film} label="Movies" />
@@ -62,7 +62,7 @@ export function Sidebar() {
 
       {/* Navigation Group 3: Knowledge & Growth */}
       <div className="flex flex-col gap-1 mt-5">
-        <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+        <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
           Grow
         </div>
         <NavItem to="/read" icon={BookOpen} label="Readlist" />
@@ -71,7 +71,7 @@ export function Sidebar() {
 
       {/* Navigation Group 4: Life & Experiences */}
       <div className="flex flex-col gap-1 mt-5">
-        <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+        <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
           Experience
         </div>
         <NavItem to="/travel" icon={Compass} label="Travel & Trips" />
@@ -80,7 +80,7 @@ export function Sidebar() {
 
       {/* Navigation Group 5: Library & Setup */}
       <div className="flex flex-col gap-1 mt-5">
-        <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+        <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
           Manage
         </div>
         <NavItem to="/media" icon={FolderArchive} label="Media Library" />
@@ -89,7 +89,7 @@ export function Sidebar() {
 
       {/* Bottom Promo / Personal Space Quote */}
       <div className="mt-auto pt-6">
-        <div className="p-3 rounded-2xl border border-border/70 bg-gradient-to-br from-primary/5 via-accent/20 to-transparent flex flex-col gap-1.5">
+        <div className="p-3.5 rounded-2xl border border-border/80 bg-gradient-to-br from-primary/8 via-accent/30 to-card flex flex-col gap-1.5 shadow-2xs">
           <div className="flex items-center gap-1.5 text-primary text-xs font-semibold">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Personal Space</span>
