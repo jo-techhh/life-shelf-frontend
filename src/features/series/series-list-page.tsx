@@ -16,7 +16,8 @@ import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
 import { useToast } from '@/app/toast-context';
-import { Tv, Plus, Search } from 'lucide-react';
+import { Tv, Plus, Search, Share2 } from 'lucide-react';
+import { ShareWatchListModal } from '../movies/share-watchlist-modal';
 
 export function SeriesListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,6 +29,7 @@ export function SeriesListPage() {
   const [page, setPage] = useState(1);
 
   const [isFormOpen, setIsFormOpen] = useState(searchParams.get('add') === 'true');
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [editingSeries, setEditingSeries] = useState<Series | null>(null);
   const [deleteSeriesId, setDeleteSeriesId] = useState<string | null>(null);
 
@@ -142,17 +144,28 @@ export function SeriesListPage() {
         title="TV Series"
         description="Track seasons, episodes, watch progress, and take episode notes."
         action={
-          <Button
-            onClick={() => {
-              setEditingSeries(null);
-              setIsFormOpen(true);
-            }}
-            size="sm"
-            className="gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add Series
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsShareModalOpen(true)}
+              className="gap-2"
+            >
+              <Share2 className="w-4 h-4" />
+              Share Watched
+            </Button>
+            <Button
+              onClick={() => {
+                setEditingSeries(null);
+                setIsFormOpen(true);
+              }}
+              size="sm"
+              className="gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Add Series
+            </Button>
+          </div>
         }
       />
 
@@ -314,6 +327,12 @@ export function SeriesListPage() {
         description="This series and all its seasons and episodes will be removed from your LifeShelf."
         confirmLabel="Delete Series"
         isLoading={deleteMutation.isPending}
+      />
+
+      {/* Share Watched List Modal */}
+      <ShareWatchListModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
       />
     </div>
   );

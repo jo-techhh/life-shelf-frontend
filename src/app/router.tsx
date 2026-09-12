@@ -16,6 +16,7 @@ import { TravelPage } from '@/features/travel/travel-page';
 import { PlansPage } from '@/features/plans/plans-page';
 import { MediaPage } from '@/features/media/media-page';
 import { SettingsPage } from '@/features/settings/settings-page';
+import { SharedWatchListPage } from '@/features/share/shared-watch-list-page';
 import { Loader2 } from 'lucide-react';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -80,6 +81,9 @@ export function AppRouter() {
           </PublicOnlyRoute>
         }
       />
+
+      {/* Public Shared Watch List route (No auth required) */}
+      <Route path="/shared/watch/:token" element={<SharedWatchListPage />} />
 
       {/* Protected App Routes */}
       <Route

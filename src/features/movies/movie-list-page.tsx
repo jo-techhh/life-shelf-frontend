@@ -16,7 +16,8 @@ import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
 import { useToast } from '@/app/toast-context';
-import { Film, Plus, Search } from 'lucide-react';
+import { Film, Plus, Search, Share2 } from 'lucide-react';
+import { ShareWatchListModal } from './share-watchlist-modal';
 
 export function MovieListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,6 +30,7 @@ export function MovieListPage() {
 
   // Form modal & delete states
   const [isFormOpen, setIsFormOpen] = useState(searchParams.get('add') === 'true');
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
   const [deleteMovieId, setDeleteMovieId] = useState<string | null>(null);
 
@@ -114,17 +116,28 @@ export function MovieListPage() {
         title="Movies"
         description="Collect, organize, rate, and track films you want to watch or have seen."
         action={
-          <Button
-            onClick={() => {
-              setEditingMovie(null);
-              setIsFormOpen(true);
-            }}
-            size="sm"
-            className="gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add Movie
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsShareModalOpen(true)}
+              className="gap-2"
+            >
+              <Share2 className="w-4 h-4" />
+              Share Watched
+            </Button>
+            <Button
+              onClick={() => {
+                setEditingMovie(null);
+                setIsFormOpen(true);
+              }}
+              size="sm"
+              className="gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Add Movie
+            </Button>
+          </div>
         }
       />
 
@@ -286,6 +299,12 @@ export function MovieListPage() {
         description="This movie will be removed from your LifeShelf. This action cannot be undone."
         confirmLabel="Delete"
         isLoading={deleteMutation.isPending}
+      />
+
+      {/* Share Watched List Modal */}
+      <ShareWatchListModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
       />
     </div>
   );
