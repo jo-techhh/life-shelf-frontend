@@ -10,8 +10,10 @@ import {
   FolderArchive,
   Settings,
   Sparkles,
+  ShieldCheck,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/app/auth-context';
 
 interface NavItemProps {
   to: string;
@@ -41,6 +43,8 @@ function NavItem({ to, icon: Icon, label, end }: NavItemProps) {
 }
 
 export function Sidebar() {
+  const { isAdmin } = useAuth();
+
   return (
     <aside className="hidden md:flex flex-col w-60 border-r border-border/70 bg-card/50 dark:bg-card/30 p-4 shrink-0 select-none min-h-[calc(100vh-4rem)]">
       {/* Navigation Group 1: General */}
@@ -49,6 +53,26 @@ export function Sidebar() {
           Personal Shelf
         </div>
         <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" end />
+      </div>
+
+      {/* Navigation Group: Discover / Curated Catalog */}
+      <div className="flex flex-col gap-1 mt-5">
+        <div className="flex items-center justify-between px-3 py-1">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">
+            Discover
+          </span>
+          {isAdmin && (
+            <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+              <ShieldCheck className="w-2.5 h-2.5" />
+              Admin
+            </span>
+          )}
+        </div>
+        <NavItem
+          to="/catalog"
+          icon={Sparkles}
+          label={isAdmin ? 'Curated Catalog' : 'Curated Catalog'}
+        />
       </div>
 
       {/* Navigation Group 2: Media & Entertainment */}

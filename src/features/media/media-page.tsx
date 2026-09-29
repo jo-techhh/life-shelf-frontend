@@ -195,6 +195,13 @@ export function MediaPage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
 
+                      {(asset.isCatalog || asset.isDefault) && (
+                        <div className="absolute top-2 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-background/90 text-primary backdrop-blur-xs border border-border/50">
+                          <Sparkles className="w-2.5 h-2.5 text-primary" />
+                          <span>Curated</span>
+                        </div>
+                      )}
+
                       <div className="absolute inset-0 bg-background/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-3">
                         <a
                           href={asset.secureUrl || asset.url}
@@ -206,14 +213,20 @@ export function MediaPage() {
                             <ExternalLink className="w-3.5 h-3.5" /> View
                           </Button>
                         </a>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => setDeleteAsset(asset)}
-                          className="w-full text-xs gap-1"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" /> Delete
-                        </Button>
+                        {asset.isCatalog || asset.isDefault ? (
+                          <div className="w-full text-center py-1.5 px-2 rounded-xl bg-secondary/90 border border-border/60 text-[10px] text-muted-foreground font-semibold">
+                            Curated (Protected)
+                          </div>
+                        ) : (
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => setDeleteAsset(asset)}
+                            className="w-full text-xs gap-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" /> Delete
+                          </Button>
+                        )}
                       </div>
                     </div>
 

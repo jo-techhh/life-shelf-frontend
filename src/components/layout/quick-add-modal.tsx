@@ -1,5 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { Dialog } from '@/components/ui/dialog';
-import { Film, Tv, BookOpen, GraduationCap, MapPin, CalendarCheck, ChevronRight } from 'lucide-react';
+import { Film, Tv, BookOpen, GraduationCap, MapPin, CalendarCheck, ChevronRight, Sparkles } from 'lucide-react';
 
 export interface QuickAddModalProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ export interface QuickAddModalProps {
 }
 
 export function QuickAddModal({ isOpen, onClose, onSelectType }: QuickAddModalProps) {
+  const navigate = useNavigate();
+
   const options = [
     {
       type: 'MOVIE' as const,
@@ -85,6 +88,24 @@ export function QuickAddModal({ isOpen, onClose, onSelectType }: QuickAddModalPr
             </button>
           );
         })}
+      </div>
+
+      {/* Curated Catalog Shortcut */}
+      <div className="mt-3.5 pt-3 border-t border-border/60">
+        <button
+          type="button"
+          onClick={() => {
+            onClose();
+            navigate('/catalog');
+          }}
+          className="w-full flex items-center justify-between p-3 rounded-2xl border border-primary/30 bg-primary/8 hover:bg-primary/15 text-primary text-xs font-semibold transition-colors cursor-pointer"
+        >
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span>Browse Curated Catalog (Popular Movies & Books)</span>
+          </div>
+          <ChevronRight className="w-4 h-4 text-primary" />
+        </button>
       </div>
     </Dialog>
   );

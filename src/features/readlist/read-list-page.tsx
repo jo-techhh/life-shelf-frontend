@@ -16,8 +16,9 @@ import { CardSkeletonGrid } from '@/components/common/loading-skeleton';
 import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
+import { BookOpen, Plus, Search, Star, Minus, MoreVertical, Edit2, Trash2, Sparkles } from 'lucide-react';
+import { CatalogPickerModal } from '@/features/catalog/catalog-picker-modal';
 import { useToast } from '@/app/toast-context';
-import { BookOpen, Plus, Search, Star, Minus, MoreVertical, Edit2, Trash2 } from 'lucide-react';
 
 export function ReadListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,6 +28,7 @@ export function ReadListPage() {
   const [page, setPage] = useState(1);
 
   const [isFormOpen, setIsFormOpen] = useState(searchParams.get('add') === 'true');
+  const [isCatalogPickerOpen, setIsCatalogPickerOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ReadingItem | null>(null);
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
 
@@ -127,17 +129,28 @@ export function ReadListPage() {
         title="Readlist"
         description="Books, articles, research papers, and technical documentation with page & percentage tracking."
         action={
-          <Button
-            onClick={() => {
-              setEditingItem(null);
-              setIsFormOpen(true);
-            }}
-            size="sm"
-            className="gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add to Readlist
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsCatalogPickerOpen(true)}
+              className="gap-2 border-primary/40 text-primary hover:bg-primary/10"
+            >
+              <Sparkles className="w-4 h-4 text-primary" />
+              Pick from Catalog
+            </Button>
+            <Button
+              onClick={() => {
+                setEditingItem(null);
+                setIsFormOpen(true);
+              }}
+              size="sm"
+              className="gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Add to Readlist
+            </Button>
+          </div>
         }
       />
 
@@ -399,6 +412,17 @@ export function ReadListPage() {
         description="This book or article will be removed from your LifeShelf."
         confirmLabel="Delete"
         isLoading={deleteMutation.isPending}
+      />
+
+      {/* Catalog Picker Modal */}
+      <CatalogPickerModal
+        isOpen={isCatalogPickerOpen}
+        onClose={() => setIsCatalogPickerOpen(false)}
+        type="book"
+        onAdded={() => {
+          queryClient.invalidateQueries({ queryKey: ['reading'] });
+          queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+        }}
       />
     </div>
   );

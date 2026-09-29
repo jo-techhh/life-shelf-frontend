@@ -6,6 +6,7 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   isLoading: boolean;
   cloudStorageConfigured: boolean;
   login: (data: LoginDto) => Promise<void>;
@@ -100,6 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         token,
         isAuthenticated: !!user && !!token,
+        isAdmin: user?.role === 'ADMIN',
         isLoading,
         cloudStorageConfigured,
         login,

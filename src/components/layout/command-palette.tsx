@@ -307,6 +307,7 @@ export function CommandPalette({ isOpen, onClose, onOpenQuickAdd }: CommandPalet
                 <div className="flex flex-col gap-1 mt-1">
                   {[
                     { path: '/dashboard', label: 'Dashboard' },
+                    { path: '/catalog', label: 'Curated Catalog' },
                     { path: '/watch/movies', label: 'Movies' },
                     { path: '/watch/series', label: 'Series' },
                     { path: '/read', label: 'Readlist' },

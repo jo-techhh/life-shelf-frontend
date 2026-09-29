@@ -17,6 +17,7 @@ import { PlansPage } from '@/features/plans/plans-page';
 import { MediaPage } from '@/features/media/media-page';
 import { SettingsPage } from '@/features/settings/settings-page';
 import { SharedWatchListPage } from '@/features/share/shared-watch-list-page';
+import { CatalogPage } from '@/features/catalog/catalog-page';
 import { Loader2 } from 'lucide-react';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -110,6 +111,9 @@ export function AppRouter() {
         {/* Experience: Travel & Plans */}
         <Route path="travel" element={<TravelPage />} />
         <Route path="plans" element={<PlansPage />} />
+
+        {/* Discover: Curated Catalog */}
+        <Route path="catalog" element={<CatalogPage />} />
 
         {/* Library & Settings */}
         <Route path="media" element={<MediaPage />} />

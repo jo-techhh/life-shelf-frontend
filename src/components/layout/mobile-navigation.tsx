@@ -13,6 +13,7 @@ import {
   Settings,
   Tv,
   GraduationCap,
+  Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -118,6 +119,15 @@ export function MobileNavigation({ onOpenQuickAdd }: MobileNavigationProps) {
             </div>
 
             <div className="grid grid-cols-2 gap-2">
+              <NavLink
+                to="/catalog"
+                onClick={() => setDrawerOpen(false)}
+                className="col-span-2 flex items-center gap-2.5 p-3 rounded-xl border border-primary/40 bg-primary/10 text-xs font-semibold text-primary"
+              >
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span>Curated Catalog (Movies & Books)</span>
+              </NavLink>
+
               <NavLink
                 to="/watch/series"
                 onClick={() => setDrawerOpen(false)}

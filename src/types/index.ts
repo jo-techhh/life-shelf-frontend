@@ -44,6 +44,7 @@ export interface User {
   username: string;
   displayName?: string | null;
   avatarUrl?: string | null;
+  role?: 'USER' | 'ADMIN';
   createdAt: string;
   updatedAt: string;
 }
@@ -64,6 +65,7 @@ export interface MediaAsset {
   secureUrl: string;
   metadata?: Record<string, unknown> | null;
   isDefault: boolean;
+  isCatalog?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -346,3 +348,89 @@ export interface PaginatedResponse<T> {
   data: T[];
   pagination: PaginationMeta;
 }
+
+export interface CatalogMovie {
+  id: string;
+  title: string;
+  description?: string | null;
+  releaseYear?: number | null;
+  language?: string | null;
+  duration?: number | null;
+  director?: string | null;
+  cast?: string | null;
+  genre?: string | null;
+  mediaAssetId?: string | null;
+  mediaAsset?: MediaAsset | null;
+  createdById: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CatalogBook {
+  id: string;
+  title: string;
+  description?: string | null;
+  author?: string | null;
+  type: ReadingType;
+  totalPages?: number | null;
+  genre?: string | null;
+  mediaAssetId?: string | null;
+  mediaAsset?: MediaAsset | null;
+  createdById: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCatalogMovieDto {
+  title: string;
+  description?: string | null;
+  releaseYear?: number | null;
+  language?: string | null;
+  duration?: number | null;
+  director?: string | null;
+  cast?: string | null;
+  genre?: string | null;
+  mediaAssetId?: string | null;
+}
+
+export type UpdateCatalogMovieDto = Partial<CreateCatalogMovieDto>;
+
+export interface AddMovieToShelfDto {
+  status?: MovieStatus;
+  priority?: Priority;
+  rating?: number | null;
+  notes?: string | null;
+  tagIds?: string[];
+}
+
+export interface CreateCatalogBookDto {
+  title: string;
+  description?: string | null;
+  author?: string | null;
+  type?: ReadingType;
+  totalPages?: number | null;
+  genre?: string | null;
+  mediaAssetId?: string | null;
+}
+
+export type UpdateCatalogBookDto = Partial<CreateCatalogBookDto>;
+
+export interface AddBookToShelfDto {
+  status?: ReadingStatus;
+  priority?: Priority;
+  rating?: number | null;
+  notes?: string | null;
+  currentPage?: number | null;
+  tagIds?: string[];
+}
+
+export interface CatalogQueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  genre?: string;
+  releaseYear?: string;
+  author?: string;
+  type?: string;
+}
+

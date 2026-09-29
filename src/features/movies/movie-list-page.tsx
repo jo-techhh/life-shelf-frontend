@@ -16,8 +16,9 @@ import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
 import { ConfirmDialog } from '@/components/common/confirm-dialog';
 import { useToast } from '@/app/toast-context';
-import { Film, Plus, Search, Share2 } from 'lucide-react';
+import { Film, Plus, Search, Share2, Sparkles } from 'lucide-react';
 import { ShareWatchListModal } from './share-watchlist-modal';
+import { CatalogPickerModal } from '@/features/catalog/catalog-picker-modal';
 
 export function MovieListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,6 +31,7 @@ export function MovieListPage() {
 
   // Form modal & delete states
   const [isFormOpen, setIsFormOpen] = useState(searchParams.get('add') === 'true');
+  const [isCatalogPickerOpen, setIsCatalogPickerOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
   const [deleteMovieId, setDeleteMovieId] = useState<string | null>(null);
@@ -117,6 +119,15 @@ export function MovieListPage() {
         description="Collect, organize, rate, and track films you want to watch or have seen."
         action={
           <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsCatalogPickerOpen(true)}
+              className="gap-2 border-primary/40 text-primary hover:bg-primary/10"
+            >
+              <Sparkles className="w-4 h-4 text-primary" />
+              Pick from Catalog
+            </Button>
             <Button
               variant="outline"
               size="sm"
@@ -305,6 +316,17 @@ export function MovieListPage() {
       <ShareWatchListModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
+      />
+
+      {/* Catalog Picker Modal */}
+      <CatalogPickerModal
+        isOpen={isCatalogPickerOpen}
+        onClose={() => setIsCatalogPickerOpen(false)}
+        type="movie"
+        onAdded={() => {
+          queryClient.invalidateQueries({ queryKey: ['movies'] });
+          queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+        }}
       />
     </div>
   );

@@ -14,6 +14,8 @@ import {
   LogOut,
   Settings,
   User as UserIcon,
+  Sparkles,
+  ShieldCheck,
 } from 'lucide-react';
 
 export interface TopBarProps {
@@ -22,7 +24,7 @@ export interface TopBarProps {
 }
 
 export function TopBar({ onOpenSearch, onOpenQuickAdd }: TopBarProps) {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
   const { theme, setTheme, isDark } = useTheme();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
@@ -186,13 +188,29 @@ export function TopBar({ onOpenSearch, onOpenQuickAdd }: TopBarProps) {
           {userMenuOpen && (
             <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-border bg-card p-2 shadow-xl animate-in zoom-in-95 text-xs z-50">
               <div className="px-3 py-2 border-b border-border/60">
-                <p className="font-semibold text-foreground text-sm truncate">
-                  {user?.displayName || user?.username}
-                </p>
-                <p className="text-muted-foreground text-[11px] truncate">{user?.email}</p>
+                <div className="flex items-center justify-between gap-1.5">
+                  <p className="font-semibold text-foreground text-sm truncate">
+                    {user?.displayName || user?.username}
+                  </p>
+                  {isAdmin && (
+                    <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                      <ShieldCheck className="w-2.5 h-2.5" />
+                      Admin
+                    </span>
+                  )}
+                </div>
+                <p className="text-muted-foreground text-[11px] truncate mt-0.5">{user?.email}</p>
               </div>
 
               <div className="py-1">
+                <Link
+                  to="/catalog"
+                  onClick={() => setUserMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-primary font-medium hover:bg-primary/10 transition-colors"
+                >
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  <span>Curated Catalog</span>
+                </Link>
                 <Link
                   to="/settings"
                   onClick={() => setUserMenuOpen(false)}
